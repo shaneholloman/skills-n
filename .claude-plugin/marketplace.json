@@ -1,0 +1,28 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "n-skills",
+  "description": "Curated plugin marketplace for AI agents - works with Claude Code, Codex, and openskills",
+  "owner": {
+    "name": "Numman Ali",
+    "email": "numman.ali@gmail.com"
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "repository": "https://github.com/numman-ali/n-skills"
+  },
+  "plugins": [
+    {
+      "name": "zai-cli",
+      "description": "Z.AI vision, search, reader, and GitHub repo tools via zai-cli",
+      "source": "./skills/tools/zai-cli",
+      "skills": ["./skills/tools/zai-cli"],
+      "strict": false,
+      "category": "tools",
+      "author": {
+        "name": "Numman Ali",
+        "github": "numman-ali"
+      },
+      "keywords": ["vision", "search", "web", "github", "mcp", "z.ai"]
+    }
+  ]
+}
