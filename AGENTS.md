@@ -22,28 +22,36 @@ Invoke skills using: `openskills read <skill-name>`
 <available_skills>
 
 <skill>
-<name>zai-cli</name>
-<description>Z.AI vision, search, reader, and GitHub exploration via MCP</description>
-<location>skills/tools/zai-cli</location>
-<invoke>openskills read zai-cli</invoke>
-</skill>
-
-<skill>
 <name>dev-browser</name>
 <description>Browser automation with persistent page state. Use when users ask to navigate websites, fill forms, take screenshots, extract web data, test web apps, or automate browser workflows.</description>
 <location>skills/automation/dev-browser</location>
 <invoke>openskills read dev-browser</invoke>
 </skill>
 
+<skill>
+<name>gastown</name>
+<description>Multi-agent orchestrator for Claude Code. Use when user mentions gastown, gas town, gt commands, convoys, polecats, rigs, slinging work, multi-agent coordination, beads, hooks, the witness, the mayor, the refinery, or wants to run multiple AI agents on projects simultaneously.</description>
+<location>skills/tools/gastown</location>
+<invoke>openskills read gastown</invoke>
+</skill>
+
+<skill>
+<name>zai-cli</name>
+<description>Z.AI vision, search, reader, and GitHub exploration via MCP</description>
+<location>skills/tools/zai-cli</location>
+<invoke>openskills read zai-cli</invoke>
+</skill>
+
 </available_skills>
 
 ## Categories
 
-### tools
-- **zai-cli**: Z.AI vision, search, reader, and GitHub exploration via MCP
-
 ### automation
 - **dev-browser**: Browser automation with persistent page state
+
+### tools
+- **gastown**: Multi-agent orchestrator for Claude Code
+- **zai-cli**: Z.AI vision, search, reader, and GitHub exploration via MCP
 
 ## Attribution
 

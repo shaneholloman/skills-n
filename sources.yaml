@@ -67,6 +67,23 @@ skills:
         - bun.lock
         - tmp/
 
+  # ─────────────────────────────────────────────────────────────────────────
+  # gastown - Multi-agent orchestrator (native skill)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - name: gastown
+    description: Multi-agent orchestrator for Claude Code. Use when user mentions gastown, gas town, gt commands, convoys, polecats, rigs, slinging work, multi-agent coordination, beads, hooks, the witness, the mayor, the refinery, or wants to run multiple AI agents on projects simultaneously.
+    native: true
+    target:
+      category: tools
+      path: skills/tools/gastown
+    author:
+      name: Numman Ali
+      github: numman-ali
+      twitter: nummanali
+    license: Apache-2.0
+    homepage: https://github.com/steveyegge/gastown
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Schema Reference
 # ─────────────────────────────────────────────────────────────────────────────
