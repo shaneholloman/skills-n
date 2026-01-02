@@ -12,7 +12,7 @@
 [![agentskills.io](https://img.shields.io/badge/format-agentskills.io-purple.svg)](https://agentskills.io)
 [![AGENTS.md](https://img.shields.io/badge/discovery-AGENTS.md-green.svg)](https://www.infoq.com/news/2025/08/agents-md/)
 
-**One marketplace. Every agent. No bullshit.**
+**One marketplace. Every agent.**
 
 [Install](#-quick-start) · [Skills](#-available-skills) · [Submit a Skill](#-want-to-be-featured) · [Philosophy](#-philosophy)
 
@@ -22,27 +22,24 @@
 
 ## 💡 Philosophy
 
-> **"Complexity is a drag."**
+> **"Write once. Run everywhere."**
 
-Every coding agent invented their own instruction format. It's chaos:
+AI coding agents are evolving fast, and each has its own way of doing things:
 
 ```
 Claude Code    →  CLAUDE.md, .claude/skills/
-GitHub Copilot →  AGENTS.md, copilot-instructions.md, CLAUDE.md, GEMINI.md
+GitHub Copilot →  AGENTS.md, copilot-instructions.md
 Codex          →  SKILL.md, ~/.codex/skills/
-Cursor         →  .cursorrules (deprecated), .cursor/rules/*.mdc
+Cursor         →  .cursor/rules/*.mdc
 Windsurf       →  Cascade Rules, Memories
 Cline          →  .clinerules
 Factory/Droid  →  .factory/droids/*.md
-Amp Code       →  Workspaces via web
 Aider          →  AGENTS.md, .aider.conf.json
 ```
 
-**Maintaining five hand-written cheat sheets is silly.**
-
 ### The n-skills Way
 
-We don't fight the fragmentation. We transcend it:
+We embrace the diversity with a universal approach:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -58,7 +55,7 @@ We don't fight the fragmentation. We transcend it:
 
 [AGENTS.md](https://www.infoq.com/news/2025/08/agents-md/) is now adopted by **20,000+ repositories** and natively supported by GitHub Copilot, Google Gemini, OpenAI Codex, Factory Droid, Cursor, and more.
 
-**n-skills is just a curated marketplace.** No CLI. No complexity. [openskills](https://github.com/numman-ali/openskills) handles everything else.
+**n-skills is a curated marketplace.** Install via [openskills](https://github.com/numman-ali/openskills) or use your agent's native installer — your choice!
 
 ---
 
@@ -79,9 +76,9 @@ That's it. Works with **every agent**: Claude Code, Cursor, Windsurf, Cline, Aid
 ---
 
 <details>
-<summary><strong>Prefer native installation?</strong></summary>
+<summary><strong>Or use native installers</strong></summary>
 
-If you're adamant about using built-in methods:
+Each agent has its own way to install skills directly:
 
 **Claude Code:**
 ```bash
@@ -102,8 +99,9 @@ $skill-installer https://github.com/numman-ali/n-skills/tree/main/skills/tools/z
 
 | Skill | Category | Source | Description |
 |:------|:---------|:-------|:------------|
-| **[zai-cli](./skills/tools/zai-cli/)** | `tools` | native | Z.AI vision, search, reader, and GitHub exploration via MCP |
 | **[dev-browser](./skills/automation/dev-browser/)** | `automation` | [SawyerHood](https://github.com/SawyerHood/dev-browser) | Browser automation with persistent page state |
+| **[gastown](./skills/tools/gastown/)** | `tools` | native | Multi-agent orchestrator for Claude Code |
+| **[zai-cli](./skills/tools/zai-cli/)** | `tools` | native | Z.AI vision, search, reader, and GitHub exploration via MCP |
 
 > More skills coming soon. Want to contribute? See [CONTRIBUTING.md](CONTRIBUTING.md)
 
@@ -206,10 +204,11 @@ n-skills/
 ├── sources.yaml               # External skill manifest
 ├── AGENTS.md                  # Universal discovery
 ├── skills/
-│   ├── tools/
-│   │   └── zai-cli/           # Native skill
-│   └── automation/
-│       └── dev-browser/       # Synced from SawyerHood
+│   ├── automation/
+│   │   └── dev-browser/       # Synced from SawyerHood
+│   └── tools/
+│       ├── gastown/           # Native skill
+│       └── zai-cli/           # Native skill
 └── docs/
     ├── skill-format.md        # How to write skills
     ├── cross-platform.md      # Multi-agent compatibility
