@@ -77,19 +77,28 @@ When adding skills to `.claude-plugin/marketplace.json`, follow this pattern:
 - `source` must be `"./"` (repo root) — NOT the skill folder path
 - `skills` array contains paths relative to `source` (i.e., relative to repo root)
 - Each skill folder must contain a `SKILL.md` with proper frontmatter
+- **NO `$schema` key** — triggers Claude Code impersonation validation error
+- **NO `upstream` key** — invalid schema, causes "Unrecognized key" error
 
-**Common mistake to avoid:**
+**Common mistakes to avoid:**
 ```json
 // WRONG - causes "skills path not found" error
 {
   "source": "./skills/tools/gastown",
-  "skills": ["./skills/tools/gastown"]  // This looks for gastown/skills/tools/gastown
+  "skills": ["./skills/tools/gastown"]
+}
+
+// WRONG - causes schema validation error
+{
+  "$schema": "...",  // DO NOT ADD THIS
+  "upstream": { ... }  // DO NOT ADD THIS
 }
 
 // CORRECT
 {
   "source": "./",
-  "skills": ["./skills/tools/gastown"]  // This finds skills/tools/gastown from root
+  "skills": ["./skills/tools/gastown"],
+  "strict": false
 }
 ```
 
@@ -102,26 +111,29 @@ When making significant updates, create a release with tags and notes.
 ### Versioning Scheme
 
 ```
-v0.MAJOR.MINOR
+v1.MAJOR.MINOR (we're past v0.x now)
 
 MAJOR: New skills, breaking changes, significant skill updates
 MINOR: Bug fixes, documentation updates, small improvements
 ```
 
+The `marketplace.json` version should match the release version.
+
 ### Release Process
 
 ```bash
-# 1. Commit changes
+# 1. Update marketplace.json version to match release
+# 2. Commit changes
 git add .
 git commit -m "Description of changes"
 git push origin main
 
-# 2. Create annotated tag
-git tag -a v0.X.Y -m "Brief description"
-git push origin v0.X.Y
+# 3. Create annotated tag
+git tag -a v1.X.Y -m "Brief description"
+git push origin v1.X.Y
 
-# 3. Create GitHub release with notes
-gh release create v0.X.Y --title "v0.X.Y - Title" --notes "$(cat <<'EOF'
+# 4. Create GitHub release with notes
+gh release create v1.X.Y --title "v1.X.Y - Title" --notes "$(cat <<'EOF'
 ## Summary
 
 Brief description of the release.
@@ -134,6 +146,14 @@ Brief description of the release.
 - **skill-name**: What changed
 EOF
 )"
+```
+
+### IMPORTANT: Always test before releasing!
+
+```bash
+# Test marketplace install works
+claude
+/plugin marketplace add numman-ali/n-skills
 ```
 
 ### Release Note Template
@@ -164,6 +184,45 @@ One-line description of what this release includes.
 - Skill significantly updated → MAJOR bump
 - Bug fixes, typos, small docs → MINOR bump (e.g., v0.3.0 → v0.3.1)
 - Breaking changes → MAJOR bump with migration notes
+
+---
+
+## Maintainer Notes: Sync Workflow
+
+The GitHub Actions workflow (`sync-skills.yml`) syncs external skills from upstream repos.
+
+### How it works
+
+1. Clones upstream repos listed in `sources.yaml`
+2. Computes SHA-256 content hash of each skill folder
+3. Compares with `content_hash` stored in `.source.json`
+4. Only syncs if content actually changed (not just new commits)
+5. Creates a PR with the changes
+
+### Critical rules
+
+- **sync-external.mjs** syncs skill content from upstream
+- **update-registry.mjs** regenerates AGENTS.md and marketplace.json from sources.yaml
+- **The sync workflow should NEVER call update-registry.mjs** — it overwrites manual edits!
+- Registry updates are only needed when `sources.yaml` changes (adding/removing skills)
+
+### Content hash checking
+
+The sync uses content hashes, not commit hashes:
+- More reliable — detects actual file changes
+- Stored in each skill's `.source.json` as `content_hash`
+- Use `--force` flag to bypass hash check if needed
+
+### When to run update-registry.mjs
+
+Only run manually when:
+- Adding a new skill to `sources.yaml`
+- Removing a skill from `sources.yaml`
+- Changing a skill's description in `sources.yaml`
+
+```bash
+node scripts/update-registry.mjs
+```
 
 ---
 
