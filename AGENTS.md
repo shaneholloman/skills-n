@@ -22,6 +22,13 @@ Invoke skills using: `openskills read <skill-name>`
 <available_skills>
 
 <skill>
+<name>zai-cli</name>
+<description>Z.AI vision, search, reader, and GitHub exploration via MCP</description>
+<location>skills/tools/zai-cli</location>
+<invoke>openskills read zai-cli</invoke>
+</skill>
+
+<skill>
 <name>dev-browser</name>
 <description>Browser automation with persistent page state. Use when users ask to navigate websites, fill forms, take screenshots, extract web data, test web apps, or automate browser workflows.</description>
 <location>skills/automation/dev-browser</location>
@@ -35,23 +42,16 @@ Invoke skills using: `openskills read <skill-name>`
 <invoke>openskills read gastown</invoke>
 </skill>
 
-<skill>
-<name>zai-cli</name>
-<description>Z.AI vision, search, reader, and GitHub exploration via MCP</description>
-<location>skills/tools/zai-cli</location>
-<invoke>openskills read zai-cli</invoke>
-</skill>
-
 </available_skills>
 
 ## Categories
 
+### tools
+- **zai-cli**: Z.AI vision, search, reader, and GitHub exploration via MCP
+- **gastown**: Multi-agent orchestrator for Claude Code
+
 ### automation
 - **dev-browser**: Browser automation with persistent page state
-
-### tools
-- **gastown**: Multi-agent orchestrator for Claude Code
-- **zai-cli**: Z.AI vision, search, reader, and GitHub exploration via MCP
 
 ## Attribution
 
