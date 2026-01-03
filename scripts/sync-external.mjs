@@ -11,10 +11,51 @@
  */
 
 import { execSync } from "child_process";
-import { existsSync, mkdirSync, rmSync, cpSync, readFileSync, writeFileSync } from "fs";
+import { createHash } from "crypto";
+import { existsSync, mkdirSync, rmSync, cpSync, readFileSync, writeFileSync, readdirSync, statSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
+
+/**
+ * Compute a content hash of an entire directory (recursive).
+ * This is used to detect if actual file contents changed, not just commits.
+ */
+function hashDirectory(dirPath, excludes = []) {
+  const hash = createHash("sha256");
+
+  function processDir(currentPath, relativePath = "") {
+    const entries = readdirSync(currentPath).sort();
+    for (const entry of entries) {
+      const fullPath = join(currentPath, entry);
+      const relPath = relativePath ? `${relativePath}/${entry}` : entry;
+
+      // Check excludes
+      const shouldExclude = excludes.some((pattern) => {
+        if (pattern.endsWith("/")) {
+          return relPath.includes(pattern.slice(0, -1));
+        }
+        if (pattern.startsWith("*.")) {
+          return relPath.endsWith(pattern.slice(1));
+        }
+        return relPath.includes(pattern);
+      });
+      if (shouldExclude) continue;
+
+      const stat = statSync(fullPath);
+      if (stat.isDirectory()) {
+        processDir(fullPath, relPath);
+      } else {
+        // Include file path and content in hash
+        hash.update(relPath);
+        hash.update(readFileSync(fullPath));
+      }
+    }
+  }
+
+  processDir(dirPath);
+  return hash.digest("hex");
+}
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -96,19 +137,32 @@ for (const skill of sources.skills || []) {
 
     console.log(`   Commit: ${commitHash.slice(0, 8)}`);
 
-    // Check if already synced
-    const prevState = syncState[skill.name] || {};
-    if (!force && prevState.commit === commitHash) {
-      console.log(`   ✅ Already up to date`);
-      continue;
-    }
-
     // Source and target paths
     const sourcePath = join(repoDir, skill.source.path);
     const targetPath = join(ROOT, skill.target.path);
 
     if (!existsSync(sourcePath)) {
       throw new Error(`Source path not found: ${skill.source.path}`);
+    }
+
+    // Compute content hash of upstream skill folder
+    const syncConfig = skill.sync || {};
+    const excludes = syncConfig.exclude || ["node_modules/", "*.lock", "bun.lock", "tmp/"];
+    const contentHash = hashDirectory(sourcePath, excludes);
+    console.log(`   Content hash: ${contentHash.slice(0, 12)}`);
+
+    // Check if content has actually changed
+    const existingSourceJson = join(targetPath, ".source.json");
+    if (!force && existsSync(existingSourceJson)) {
+      try {
+        const existing = JSON.parse(readFileSync(existingSourceJson, "utf-8"));
+        if (existing.content_hash === contentHash) {
+          console.log(`   ✅ Content unchanged, skipping`);
+          continue;
+        }
+      } catch (e) {
+        // If we can't read it, proceed with sync
+      }
     }
 
     // Validate SKILL.md exists
@@ -157,7 +211,7 @@ for (const skill of sources.skills || []) {
       });
     }
 
-    // Write attribution file
+    // Write attribution file with content hash
     const attributionPath = join(targetPath, ".source.json");
     writeFileSync(
       attributionPath,
@@ -166,6 +220,7 @@ for (const skill of sources.skills || []) {
           synced_from: skill.source.repo,
           source_path: skill.source.path,
           commit: commitHash,
+          content_hash: contentHash,
           synced_at: new Date().toISOString(),
           homepage: skill.homepage,
           author: skill.author,

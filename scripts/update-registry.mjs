@@ -57,10 +57,7 @@ if (existsSync(MARKETPLACE_FILE)) {
   try {
     const existing = JSON.parse(readFileSync(MARKETPLACE_FILE, "utf-8"));
     if (existing.metadata?.version) {
-      // Increment patch version
-      const parts = existing.metadata.version.split(".");
-      parts[2] = String(parseInt(parts[2] || "0", 10) + 1);
-      existingVersion = parts.join(".");
+      existingVersion = existing.metadata.version;
     }
   } catch (e) {
     // Use default version if parsing fails
