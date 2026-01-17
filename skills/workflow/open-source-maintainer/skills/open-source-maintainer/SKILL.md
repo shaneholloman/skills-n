@@ -67,7 +67,7 @@ The skill maintains project memory in `.github/maintainer/`:
 | `runs.md` | Run ledger with report paths |
 | `state.json` | Technical state for delta computation |
 
-On first run, create this folder and populate `context.md`. See `references/repo-state-template.md`.
+On first run, the triage script automatically creates this folder with template files. Review and customize `context.md` with project-specific information. See `references/repo-state-template.md` for template details.
 Notes/work/index are persistent across runs; reports are snapshots.
 
 ## Workflow Stages

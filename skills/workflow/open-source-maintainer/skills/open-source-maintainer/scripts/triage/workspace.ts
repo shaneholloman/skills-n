@@ -71,15 +71,115 @@ const STATE_FILES = [
   'contributors.md',
   'patterns.md',
   'standing-rules.md',
+  'runs.md',
 ];
 
 function loadRepoStateTemplate(): Record<string, string> {
   const fallback: Record<string, string> = {
-    'context.md': '# Project Context\n\n## Vision\n\n## Current Priorities\n\n## Success Metrics\n\n## Areas\n\n## Contribution Guidelines\n\n## Tone\n\n## Out of Scope\n',
-    'decisions.md': '# Decision Log\n\n## YYYY-MM\n\n### [ISSUE:XX] Title\n**Date:** YYYY-MM-DD\n**Decision:**\n**Reasoning:**\n',
-    'contributors.md': '# Contributor Notes\n\n## Active Contributors\n\n## Former Contributors\n',
-    'patterns.md': '# Observed Patterns\n\n## Recurring Issues\n\n## Contributor Patterns\n\n## Codebase Patterns\n',
-    'standing-rules.md': '# Standing Rules\n\n## Stale Policy\n\n## Auto-Labels\n\n## External PR Handling\n',
+    'context.md': `# Project Context
+
+## Vision
+[One paragraph: what is this project and why does it exist?]
+
+## Current Priorities
+1. [Top priority]
+2. [Second priority]
+3. [Third priority]
+
+## Success Metrics
+- [Adoption goal or usage signal]
+- [Quality goal: reliability, docs, tests, etc.]
+
+## Areas
+
+| Area | Status | Notes |
+|------|--------|-------|
+| \`src/core/\` | Stable | High scrutiny for changes |
+| \`src/cli/\` | Active | Moderate churn okay |
+| \`docs/\` | Needs work | Contributions welcome |
+
+## Contribution Guidelines
+- [Key guideline 1]
+- [Key guideline 2]
+
+## Tone
+[How should responses sound? Formal? Casual? Technical?]
+
+## Out of Scope
+- [Thing we explicitly don't want]
+- [Another thing]
+`,
+    'decisions.md': `# Decision Log
+
+## YYYY-MM
+
+### [ISSUE:XX] Title
+**Date:** YYYY-MM-DD
+**Decision:** [Implemented / Deferred / Closed]
+**Reasoning:** [Why this decision was made]
+`,
+    'contributors.md': `# Contributor Notes
+
+## Active Contributors
+
+### @username
+- **First seen:** YYYY-MM-DD
+- **Contributions:** [X PRs, Y issues]
+- **Strengths:** [Notable qualities]
+- **Notes:** [Any relevant context]
+
+## Former Contributors
+
+[Record contributors who are no longer active]
+`,
+    'patterns.md': `# Observed Patterns
+
+## Recurring Issues
+
+### [Pattern Name]
+- **First seen:** YYYY-MM-DD
+- **Frequency:** [X duplicate reports]
+- **Root cause:** [What causes this]
+- **Resolution:** [How it was fixed]
+- **Prevention:** [How to prevent recurrence]
+
+## Contributor Patterns
+
+- [Observations about contributor behavior]
+
+## Codebase Patterns
+
+- [Observations about where bugs cluster, coverage gaps, etc.]
+`,
+    'standing-rules.md': `# Standing Rules
+
+## Stale Policy
+
+| Condition | Days | Action |
+|-----------|------|--------|
+| Issue waiting on reporter | 30 | Comment asking for update |
+| Issue waiting on reporter | 60 | Close as stale |
+| PR waiting on author | 30 | Close as stale |
+
+## Auto-Labels
+
+| Condition | Label |
+|-----------|-------|
+| PR touches \`src/core/\` | \`core\` |
+| Issue mentions "windows" | \`platform:windows\` |
+| First-time contributor | \`first-contribution\` |
+
+## External PR Handling
+
+- Never merge external PRs
+- Extract intent and implement fixes directly
+- Close PRs with explanation and credit
+`,
+    'runs.md': `# Run Ledger
+
+| Date | Report Path | Summary |
+|------|-------------|---------|
+`,
   };
 
   try {
@@ -124,5 +224,18 @@ export function ensureMaintainerState(maintainerDir: string) {
     if (!fs.existsSync(filePath)) {
       fs.writeFileSync(filePath, `${template[fileName] ?? ''}\n`, 'utf8');
     }
+  }
+
+  // Initialize state.json if missing
+  const statePath = path.join(maintainerDir, 'state.json');
+  if (!fs.existsSync(statePath)) {
+    const initialState = {
+      schemaVersion: 1,
+      lastRunAt: null,
+      lastReportDir: null,
+      issueHashes: {},
+      prHashes: {},
+    };
+    fs.writeFileSync(statePath, `${JSON.stringify(initialState, null, 2)}\n`, 'utf8');
   }
 }

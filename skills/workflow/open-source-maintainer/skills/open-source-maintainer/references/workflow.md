@@ -28,8 +28,8 @@ Apply CEV-style stewardship: optimize for what the project would want with bette
 
 ## Pre-requisites
 
-Initialize per-repo state in `.github/maintainer/` if not present. See [repo-state-template.md](repo-state-template.md).
-Ensure `.github/maintainer/config.json` exists for machine-readable settings. See [config.md](config.md).
+The triage script automatically initializes `.github/maintainer/` with template files on first run. After running, review and customize `context.md` with project-specific information. See [repo-state-template.md](repo-state-template.md) for template details.
+The script also creates `.github/maintainer/config.json` with defaults if missing. See [config.md](config.md).
 The agent maintains `.github/maintainer/semantics.generated.json` from templates/docs; do not edit manually.
 Persistent notes live in `.github/maintainer/notes/` and are merged into each report.
 
