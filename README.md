@@ -70,6 +70,7 @@ We embrace the diversity with a universal approach:
 Then install any skill:
 ```bash
 /plugin install orchestration@n-skills
+/plugin install open-source-maintainer@n-skills
 /plugin install gastown@n-skills
 /plugin install dev-browser@n-skills
 /plugin install zai-cli@n-skills
@@ -104,6 +105,7 @@ $skill-installer https://github.com/numman-ali/n-skills/tree/main/skills/tools/z
 | Skill | Category | Source | Description |
 |:------|:---------|:-------|:------------|
 | **[orchestration](./skills/workflow/orchestration/)** | `workflow` | native | Multi-agent orchestration with cc-mirror tasks + TodoWrite |
+| **[open-source-maintainer](./skills/workflow/open-source-maintainer/)** | `workflow` | native | End-to-end GitHub repo maintenance for open-source projects |
 | **[dev-browser](./skills/automation/dev-browser/)** | `automation` | [SawyerHood](https://github.com/SawyerHood/dev-browser) | Browser automation with persistent page state |
 | **[gastown](./skills/tools/gastown/)** | `tools` | native | Multi-agent orchestrator (best with Claude Code + Opus) |
 | **[zai-cli](./skills/tools/zai-cli/)** | `tools` | native | Z.AI vision, search, reader, and GitHub exploration via MCP |
@@ -216,7 +218,8 @@ n-skills/
 │   │   ├── gastown/           # Native skill
 │   │   └── zai-cli/           # Native skill
 │   └── workflow/
-│       └── orchestration/     # Native skill - multi-agent coordination
+│       ├── orchestration/            # Native skill - multi-agent coordination
+│       └── open-source-maintainer/   # Native skill - GitHub repo maintenance
 └── docs/
     ├── skill-format.md        # How to write skills
     ├── cross-platform.md      # Multi-agent compatibility

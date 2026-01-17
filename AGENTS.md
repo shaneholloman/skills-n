@@ -49,6 +49,13 @@ Invoke skills using: `openskills read <skill-name>`
 <invoke>openskills read orchestration</invoke>
 </skill>
 
+<skill>
+<name>open-source-maintainer</name>
+<description>End-to-end GitHub repository maintenance for open-source projects. Use when asked to triage issues, review PRs, analyze contributor activity, generate maintenance reports, or maintain a repository. Triggers include "triage", "maintain", "review PRs", "analyze issues", "repo maintenance", "what needs attention", "open source maintenance", or any request to understand and act on GitHub issues/PRs.</description>
+<location>skills/workflow/open-source-maintainer</location>
+<invoke>openskills read open-source-maintainer</invoke>
+</skill>
+
 </available_skills>
 
 ## Categories
@@ -62,6 +69,7 @@ Invoke skills using: `openskills read <skill-name>`
 
 ### workflow
 - **orchestration**: Multi-agent orchestration for complex tasks using cc-mirror tasks and TodoWrite
+- **open-source-maintainer**: End-to-end GitHub repository maintenance for open-source projects
 
 ## Attribution
 
@@ -71,46 +79,49 @@ Skills may be sourced from external repositories. Check each skill's `.source.js
 
 ## Maintainer Notes: Plugin Structure
 
-When adding skills to `.claude-plugin/marketplace.json`, follow this pattern:
+Each skill must be a **separate entry** in the `plugins` array in `.claude-plugin/marketplace.json`:
 
+```json
+{
+  "plugins": [
+    {
+      "name": "skill-name",
+      "description": "...",
+      "source": "./skills/category/skill-name",
+      "category": "workflow",
+      "author": {
+        "name": "Author Name",
+        "github": "github-username"
+      }
+    }
+  ]
+}
+```
+
+**Each skill folder must contain:**
+1. `SKILL.md` — Skill content in agentskills.io format
+2. `.claude-plugin/plugin.json` — Plugin manifest for Claude Code
+
+**plugin.json template:**
 ```json
 {
   "name": "skill-name",
   "description": "...",
-  "source": "./",
-  "skills": ["./skills/category/skill-name"],
-  "strict": false
+  "version": "1.0.0",
+  "author": {
+    "name": "Author Name",
+    "url": "https://github.com/username"
+  },
+  "repository": "https://github.com/repo",
+  "license": "Apache-2.0",
+  "keywords": ["keyword1", "keyword2"]
 }
 ```
 
 **Critical rules:**
-- `source` must be `"./"` (repo root) — NOT the skill folder path
-- `skills` array contains paths relative to `source` (i.e., relative to repo root)
-- Each skill folder must contain a `SKILL.md` with proper frontmatter
+- Each skill is a separate plugin entry (NOT a nested `skills` array)
+- `source` points to the skill folder path
 - **NO `$schema` key** — triggers Claude Code impersonation validation error
-- **NO `upstream` key** — invalid schema, causes "Unrecognized key" error
-
-**Common mistakes to avoid:**
-```json
-// WRONG - causes "skills path not found" error
-{
-  "source": "./skills/tools/gastown",
-  "skills": ["./skills/tools/gastown"]
-}
-
-// WRONG - causes schema validation error
-{
-  "$schema": "...",  // DO NOT ADD THIS
-  "upstream": { ... }  // DO NOT ADD THIS
-}
-
-// CORRECT
-{
-  "source": "./",
-  "skills": ["./skills/tools/gastown"],
-  "strict": false
-}
-```
 
 ---
 

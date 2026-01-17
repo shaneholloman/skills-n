@@ -101,6 +101,23 @@ skills:
     license: Apache-2.0
     homepage: https://github.com/numman-ali/n-skills
 
+  # ─────────────────────────────────────────────────────────────────────────
+  # open-source-maintainer - GitHub repo maintenance (native skill)
+  # ─────────────────────────────────────────────────────────────────────────
+
+  - name: open-source-maintainer
+    description: End-to-end GitHub repository maintenance for open-source projects. Use when asked to triage issues, review PRs, analyze contributor activity, generate maintenance reports, or maintain a repository. Triggers include "triage", "maintain", "review PRs", "analyze issues", "repo maintenance", "what needs attention", "open source maintenance", or any request to understand and act on GitHub issues/PRs.
+    native: true
+    target:
+      category: workflow
+      path: skills/workflow/open-source-maintainer
+    author:
+      name: Numman Ali
+      github: numman-ali
+      twitter: nummanali
+    license: Apache-2.0
+    homepage: https://github.com/numman-ali/n-skills
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Schema Reference
 # ─────────────────────────────────────────────────────────────────────────────
