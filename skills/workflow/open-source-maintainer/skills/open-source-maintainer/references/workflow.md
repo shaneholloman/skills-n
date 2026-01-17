@@ -1,5 +1,11 @@
 # Maintenance Workflow
 
+## At a glance
+
+- **Purpose:** Deep, step-by-step workflow details behind the SKILL.md runbook.
+- **Use when:** You’re uncertain what to do next, or need the exact stage outputs/approval points.
+- **Note:** SKILL.md is the canonical runbook; this file is the deeper reference.
+
 ## Core Philosophy: Agent-Implemented Fixes
 
 **PRs are intelligence sources, not merge candidates.**

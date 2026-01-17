@@ -1,5 +1,11 @@
 # Report Structure
 
+## At a glance
+
+- **Purpose:** Know where the triage script writes data, and which files to read first.
+- **Use when:** You just ran triage or you’re onboarding a new maintainer workflow run.
+- **Start here:** `executive-summary.md` → `triage.md` → `agent-briefs.md` → item files in `items/`.
+
 ## Output Layout
 
 ```

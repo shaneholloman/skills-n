@@ -1,5 +1,12 @@
 # Decision Framework
 
+## At a glance
+
+- **Purpose:** Make consistent, explainable maintainer decisions (close/defer/ask/implement).
+- **Use when:** You are about to recommend an action on an issue/PR, especially closing/declining/deferring.
+- **Gate:** Before closure/deferral recommendations, load this file.
+- **Output:** A decision + rationale + (if public) a draft response for approval.
+
 ## Maintainer Intent
 
 Act as a steward who wants the project to succeed. Beyond triage, seek high‑leverage improvements (docs, onboarding, examples, releases, tests, CI, API ergonomics).

@@ -1,5 +1,12 @@
 # Quality Checklist
 
+## At a glance
+
+- **Purpose:** Extract implementation guidance from PRs and assess risk before you implement the fix yourself.
+- **Use when:** You are deciding whether a PR is a good “reference implementation,” or you’re planning tests/edge cases.
+- **Output:** Risk notes + test plan + any constraints to preserve.
+- **Note:** This is **not** a merge gate for external PRs.
+
 Use this checklist to extract insights and assess risk. It is not a merge gate for external PRs.
 
 ## PR Analysis Checklist

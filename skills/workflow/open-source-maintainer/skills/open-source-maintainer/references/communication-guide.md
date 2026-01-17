@@ -1,5 +1,12 @@
 # Communication Guide
 
+## At a glance
+
+- **Purpose:** Keep public communication warm, efficient, and trust-building.
+- **Use when:** You are about to draft a public response (issue/PR comment, close note, duplicate consolidation).
+- **Gate:** Before *any* public-facing text, load this file and follow its constraints.
+- **Output:** A draft message ready for human approval (clear status + next step, no vague promises).
+
 ## Principles
 
 1. **Warm but efficient** - Appreciate contributions without being effusive

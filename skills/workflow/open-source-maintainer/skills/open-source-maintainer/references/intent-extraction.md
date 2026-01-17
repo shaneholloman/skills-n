@@ -1,5 +1,11 @@
 # Intent Extraction
 
+## At a glance
+
+- **Purpose:** Convert raw issues/PRs into “what the user actually needs” + actionability.
+- **Use when:** Analyzing items, mapping duplicates/relationships, or writing briefs.
+- **Output:** Intent, severity, sentiment, actionability, relationships, and the minimal next step.
+
 ## Purpose
 
 Surface the real need behind issues and PRs, not just the stated request.

@@ -1,5 +1,11 @@
 # Per-Repo State Template
 
+## At a glance
+
+- **Purpose:** The canonical file layout for `.github/maintainer/` (project memory).
+- **Use when:** First run bootstrapping, fixing missing state, or reshaping the maintainer folder.
+- **Output:** Correct directory structure + templates copied, ready for customization.
+
 Initialize `.github/maintainer/` in each repository with these files.
 
 ## Directory Structure

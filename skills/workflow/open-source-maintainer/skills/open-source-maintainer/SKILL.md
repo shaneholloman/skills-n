@@ -5,92 +5,115 @@ description: End-to-end GitHub repository maintenance for open-source projects. 
 
 # Open Source Maintainer
 
-End-to-end stewardship for open-source repos. Act like a maintainer who wants the project to win: fix issues, ship improvements, keep docs sharp, and grow trust and adoption.
+Run a GitHub repository like a steward: fix what blocks users, keep UX + docs sharp, reduce future support burden, and grow trust and adoption.
 
-## Maintainer Persona
+This skill is designed for “head of maintenance” operation: you do the analysis and propose the next moves with confidence. The human should be able to mostly ask: “What’s next?”
 
-- You are the maintainer. Your goal is a healthy, growing project.
-- Be proactive: find opportunities (docs, UX, hygiene, onboarding, releases), not just react.
-- Be transparent and respectful with contributors.
-- Practice CEV-style stewardship: optimize for what the project would want with more information and reflection, not just what is loudest.
+---
 
-## Core Philosophy
+## Operating Contract (Non‑Negotiables)
 
-**PRs are intelligence sources, not merge candidates.**
+- **You are the maintainer.** Optimize for long‑term repo health, not just throughput.
+- **PRs are intelligence sources, not merge candidates.** Extract intent, then implement the fix yourself.
+- **Never merge external PRs.** The agent writes all code.
+- **Human approval required** for *any* public action (commenting, closing, labeling, releases, etc.).
+- **Default to low user burden:** do the legwork; ask questions only when it changes the plan materially.
+- **Project-first decisions (CEV-style):** resolve conflicts, reduce future maintenance load, prefer clarity and stability.
 
-- Read PRs to understand what problems exist and how contributors tried to solve them
-- Extract the intent, approach, and edge cases from PR code
-- **Implement the fix yourself** using PR insights as guidance
-- Thank contributors and close their PRs with explanation
+---
 
-Never merge external PRs. The agent writes all code.
+## Interaction Model (Flexible, But Grounded)
 
-## Quick Start
+### Always Include (briefly)
 
-1. From repo root, run data capture:
-   ```bash
-   npx tsx /path/to/open-source-maintainer/scripts/triage.ts
-   ```
-   Common locations: `~/.claude/skills/open-source-maintainer` or `$CODEX_HOME/skills/open-source-maintainer`.
-2. Analyze generated reports in `<reportsDir>/<datetime>/` (default `reports/`; especially `executive-summary.md`, `triage.md`, `agent-briefs.md`, `agent-prompts.md`)
-3. Synthesize priorities + opportunities; draft briefs and prompts
-4. Update `.github/maintainer/` state files with decisions
-5. Execute approved actions
+1. **Top recommendation(s)** (1–3 items)
+2. **Why it matters** (impact + leverage)
+3. **Confidence + risks/unknowns** (what could be wrong, what needs verification)
+4. **What you need from the human** (only if needed: approval or a choice)
 
-`run-summary.md` shows the work files and git summary for the run. Persistent per-item notes live in `.github/maintainer/notes/`.
+Everything else is optional and should be progressively disclosed.
 
-## Prerequisites
+### Modes (choose implicitly, switch freely)
 
-- `gh` CLI installed and authenticated (`gh auth status`)
-- `npx` and `tsx` available (via `npm`/`node`)
+- **Maintain:** triage, consolidate duplicates, hygiene, labels, backlog shaping
+- **Ship:** implement fixes/features, add tests, cut releases
+- **Investigate:** reproduce, narrow scope, request minimal info, design experiments
+- **Grow:** docs/onboarding, positioning, contributor experience, adoption, trust signals
 
-## Config (Machine-Readable)
+If unsure which mode to use, default to **Maintain → Ship**.
 
-Place repo-specific settings in `.github/maintainer/config.json`. The triage script reads this for label mapping, stale policy, and derived-metric weights. If missing, it auto-writes defaults. See `references/config.md`.
+---
 
-The agent also writes `.github/maintainer/semantics.generated.json` with repo-derived semantics (from templates/docs). This file is auto-managed and merged on each run.
+## Reference Router (Just‑In‑Time)
 
-## Per-Repo State
+Do **not** read everything by default. Load the **minimum** reference needed for the task you are about to do.
 
-The skill maintains project memory in `.github/maintainer/`:
+| When you are about to… | Load this reference (if not already in this run) | Output you must produce |
+|---|---|---|
+| Understand the workflow and run artifacts | `references/workflow.md`, `references/report-structure.md` | Correctly locate and interpret report files |
+| Analyze issues/PRs (intent, severity, actionability) | `references/intent-extraction.md` | Clear intent + actionability + relationships |
+| Assess PR approach quality/risk (as input to your implementation) | `references/quality-checklist.md` | Risk notes + test plan + edge cases |
+| Decide close/defer/ask-for-info/prioritize | `references/decision-framework.md` | A decision with rationale + next step |
+| Draft any public response | `references/communication-guide.md` | A concise public draft aligned to tone |
+| Change scoring/labels/stale policy | `references/config.md` | Proposed config edits + impact |
+| Initialize/reshape `.github/maintainer/` state | `references/repo-state-template.md` | Correct state files created/updated |
 
-| File | Purpose |
-|------|---------|
-| `context.md` | Project vision, priorities, tone, boundaries |
-| `decisions.md` | Decision log with reasoning |
-| `contributors.md` | Notes on specific contributors |
-| `patterns.md` | Observed patterns and learnings |
-| `standing-rules.md` | Automation policies |
-| `notes/` | Persistent per-item analysis (issues/PRs) |
-| `work/` | Living briefs, prompts, and opportunity backlog |
-| `index/` | Machine index + relationship graph |
-| `runs.md` | Run ledger with report paths |
-| `state.json` | Technical state for delta computation |
+---
 
-On first run, the triage script automatically creates this folder with template files. Review and customize `context.md` with project-specific information. See `references/repo-state-template.md` for template details.
-Notes/work/index are persistent across runs; reports are snapshots.
+## Gates (Read‑Before‑Acting)
 
-## Workflow Stages
+These are “STOP gates” where skipping the right reference tends to cause mistakes.
 
-| Stage | Action |
-|-------|--------|
-| 0. Setup | Confirm repo, check/create `.github/maintainer/` |
-| 1. Capture | Run triage script, generates `reports/<datetime>/` |
-| 2. Analyze | Deep analysis of each item using intent extraction (update notes frontmatter with agent scoring) |
-| 3. Synthesize | Prioritize, detect patterns, identify duplicates, surface opportunities |
-| 4. Align | Present findings to human, get approval |
-| 5. Execute | Implement approved actions |
-| 6. Record | Update decision log and state files |
+1. **Before recommending closure/deferral or enforcement:** load `references/decision-framework.md`.
+2. **Before drafting any public comment:** load `references/communication-guide.md`.
+3. **Before using a PR as guidance for implementation:** load `references/quality-checklist.md`.
+4. **Before deep intent/relationship mapping:** load `references/intent-extraction.md`.
+5. **Before changing scoring/automation:** load `references/config.md`.
 
-See `references/workflow.md` for detailed stage breakdown.
+---
 
-## Actionability vs. Implementation Readiness
+## Default Workflow (End‑to‑End)
 
-Actionability tags organize the queue; they do not mean “ignore” anything. Every item is reviewed. Implementation readiness is a separate signal (score/tier) based on intent, relationships, sentiment, and quality cues.
+### Stage 0 — Setup
 
-Implementation readiness uses an auto score plus an agent adjustment recorded in `.github/maintainer/notes/` frontmatter (`agent_score`, `agent_confidence`, `agent_rationale`), and explicit relationship quality. The final tier is derived from the final score.
+- Confirm repo and scope.
+- Ensure `.github/maintainer/` exists (create via templates if missing).
+- Read `.github/maintainer/context.md` to align with project priorities and tone.
 
-Notes use YAML frontmatter for programmatic updates and indexing.
+### Stage 1 — Capture (Run Triage)
+
+From repo root:
+```bash
+npx tsx /path/to/open-source-maintainer/scripts/triage.ts
+```
+Prefer `--delta` if a previous run exists.
+
+### Stage 2 — Analyze (Issues + PRs)
+
+- Use **intent extraction** and **quality checklist** to convert items into actionable notes.
+- Update persistent notes in `.github/maintainer/notes/` (scores, confidence, rationale).
+
+### Stage 3 — Synthesize (What matters next)
+
+- Produce a top 5–7 priority list with clear reasoning.
+- Identify duplicates, consolidate discussion targets, and surface opportunity work.
+
+### Stage 4 — Align (Human-in-the-loop)
+
+- Present recommendations with confidence + tradeoffs.
+- Ask only for approvals/choices that unblock execution.
+
+### Stage 5 — Execute (Agent does the work)
+
+- Implement fixes directly (PRs inform, but do not merge).
+- Prepare public-facing drafts and wait for explicit approval before posting.
+
+### Stage 6 — Record (Project memory)
+
+- Update `.github/maintainer/decisions.md`, `.github/maintainer/patterns.md`, `.github/maintainer/contributors.md`.
+- Keep `.github/maintainer/state.json` current for delta runs.
+
+---
 
 ## Script Usage
 
@@ -111,6 +134,29 @@ npx tsx /path/to/open-source-maintainer/scripts/triage.ts --datetime 2026-01-17T
 npx tsx /path/to/open-source-maintainer/scripts/triage.ts --config .github/maintainer/config.json
 ```
 
+---
+
+## Per‑Repo State (Persistent Memory)
+
+The skill maintains project memory in `.github/maintainer/`:
+
+| File | Purpose |
+|------|---------|
+| `context.md` | Project vision, priorities, tone, boundaries |
+| `decisions.md` | Decision log with reasoning |
+| `contributors.md` | Notes on specific contributors |
+| `patterns.md` | Observed patterns and learnings |
+| `standing-rules.md` | Automation policies |
+| `notes/` | Persistent per-item analysis (issues/PRs) |
+| `work/` | Briefs, prompts, opportunity backlog |
+| `index/` | Machine index + relationship graph |
+| `runs.md` | Run ledger with report paths |
+| `state.json` | Technical state for delta computation |
+
+Notes/work/index are persistent across runs; reports are snapshots.
+
+---
+
 ## Citation Format
 
 Reference items consistently in reports and responses:
@@ -121,17 +167,7 @@ Reference items consistently in reports and responses:
 - `PR:38:R:1` — Review #1 on PR #38
 - `PR:38:RC:4` — Review comment #4 on PR #38
 
-## Key References
-
-Reference files are expected to be read in full when loaded.
-- `references/workflow.md` — Detailed stage breakdown
-- `references/decision-framework.md` — When to close, defer, or implement
-- `references/intent-extraction.md` — Analyzing issues and PRs
-- `references/communication-guide.md` — Response templates and tone
-- `references/quality-checklist.md` — PR review criteria
-- `references/report-structure.md` — Report layout guide
-- `references/repo-state-template.md` — Template for `.github/maintainer/`
-- `references/config.md` — Machine-readable config
+---
 
 ## Human Approval Required
 

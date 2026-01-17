@@ -1,5 +1,12 @@
 # Maintainer Config
 
+## At a glance
+
+- **Purpose:** Control triage scoring, stale policy, label mapping, and derived metrics.
+- **Use when:** Scoring/actionability feels “off,” you want different prioritization, or you’re changing automation policy.
+- **Output:** Proposed edits to `.github/maintainer/config.json` with a short rationale.
+- **Do not:** Manually edit `.github/maintainer/semantics.generated.json` (it is auto-managed).
+
 Machine-readable configuration file for the maintainer workflow.
 
 Place it at:
